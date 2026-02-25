@@ -1,0 +1,16 @@
+from app.services.embedding_service import EmbeddingService
+from app.services.vector_store import VectorStore
+from app.services.claude_service import ClaudeService
+from app.prompts.rag_prompt import build_rag_prompt
+
+class RAGPipeline:
+    def __init__(self, vector_store):
+        self.embedder = EmbeddingService()
+        self.vector_store = vector_store
+        self.claude = ClaudeService()
+
+    def query(self, question):
+        q_embed = self.embedder.embed([question])[0]
+        context_chunks = self.vector_store.search(q_embed)
+        prompt = build_rag_prompt(question, context_chunks)
+        return self.claude.generate(prompt)
