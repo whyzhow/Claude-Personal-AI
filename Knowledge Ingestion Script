@@ -1,0 +1,19 @@
+import os
+from app.services.embedding_service import EmbeddingService
+from app.services.vector_store import VectorStore
+
+DATA_PATH = "data/"
+
+embedder = EmbeddingService()
+store = VectorStore()
+
+texts = []
+
+for file in os.listdir(DATA_PATH):
+    with open(os.path.join(DATA_PATH, file), "r", encoding="utf-8") as f:
+        texts.append(f.read())
+
+embeddings = embedder.embed(texts)
+store.add(embeddings, texts)
+
+print("Knowledge base built successfully.")
