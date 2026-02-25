@@ -1,0 +1,13 @@
+def build_rag_prompt(question, context_chunks):
+    context = "\n\n".join(context_chunks)
+    return f"""
+You are an expert AI assistant answering based on a private knowledge base.
+
+Knowledge Base Content:
+{context}
+
+Please answer the following question strictly based on the content above:
+{question}
+
+If the knowledge base does not contain relevant information, state that clearly.
+"""
